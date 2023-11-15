@@ -5,36 +5,42 @@ import re
 
 
 def extract_name(text):
-    # First pattern to capture text between "Nama (Name) :" and "Nomor NIK/Paspor"
-    first_pattern = r'Nama \(Name\) :\s*([^\n]+)'
+    # First pattern
+    pattern = r'Nama \(Name\) :\s*\[?([^\]\n]+)\]?\s*Nomor NIK/Paspor'
+    match = re.search(pattern, text, re.IGNORECASE)
+    if match:
+        return match.group(1).strip()
 
-    # Try the first pattern
-    first_match = re.search(first_pattern, text, re.IGNORECASE)
-    if first_match:
-        return first_match.group(1).strip()
+    # Second pattern
+    pattern = r': (.*?)(?=\n\n: \d{10,20})'
+    match = re.search(pattern, text)
+    if match:
+        return match.group(1).strip()
 
-    # If the first pattern didn't match, then use the alternative pattern
-    # This pattern finds lines that are likely to contain the name, then processes them
-    lines = text.split('\n')
-    for i, line in enumerate(lines):
-        if ':' in line or '-' in line:
-            # Check if the next line has a colon and a number
-            if i + 1 < len(lines) and re.match(r': \d{10,20}', lines[i + 1]):
-                # Extract the name from the current line
-                name_match = re.search(r'(?<=[:\-] )([^\n:]+)', line)
-                if name_match:
-                    return name_match.group(1).strip()
+    # Third pattern
+    pattern = r'Nama \(Name\) [>: -]+(.*)'
+    match = re.search(pattern, text)
+    if match:
+        return match.group(1).strip()
+    
+    # Fourth pattern
+    pattern = r'\n[>-]\s*([A-Za-z\s]+)'
+    match = re.search(pattern, text)
+    if match:
+        return match.group(1).strip()
+
     return None
 
 
 # Set the source folder
-source_folder = '/Users/guntar/Downloads/PENDING DJK 2021/PENDING - 0921 Sertifikasi DJK/Batch 1_UBJOM PULPIS'
+# source_folder = 'E:\OneDrive\Documents\WorkingFiles\PENDING DJK 2021\PENDING - 0921 Sertifikasi DJK\Batch 1_UBJOM PULPIS'
+source_folder = r'E:\DataKerja\PENDING DJK 2021\PENDING - 0921 Sertifikasi DJK\Batch 3\\'
 
 # Set the filename manually
-filename = 'Scan Sertifikat PT PJB UBJOM PLTU Pulang Pisau (1)_14.pdf'
+filename = 'Scan Sertifikat _ PT PJB PLTU Pacitan_11.pdf'
 
 # Set the page where the data is located
-data_location = 2  # Change this as needed
+data_location = 1  # Change this as needed
 
 # Combine the source folder and file name
 pdf_path = os.path.join(source_folder, filename)

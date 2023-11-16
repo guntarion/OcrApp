@@ -24,7 +24,7 @@ def extract_name(text):
         return match.group(1).strip()
     
     # Fourth pattern
-    pattern = r'\n[>-]\s*([A-Za-z\s]+)'
+    pattern = r'\n[>:-]\s*([A-Za-z\s]+)'
     match = re.search(pattern, text)
     if match:
         return match.group(1).strip()
@@ -34,13 +34,13 @@ def extract_name(text):
 
 # Set the source folder
 # source_folder = 'E:\OneDrive\Documents\WorkingFiles\PENDING DJK 2021\PENDING - 0921 Sertifikasi DJK\Batch 1_UBJOM PULPIS'
-source_folder = r'E:\DataKerja\PENDING DJK 2021\PENDING - 0921 Sertifikasi DJK\Batch 3\\'
+source_folder = r"E:\JAPOGdrive\My Drive\01 PT JTB Projects\001 Sertifikat PJCA\Raw Mat Bahan Sertifikat\Box Pembelajaran Teknik\Jar Teknik 2021\PENDING - 1221 Sertifikasi DJK Desember 2021 Batch 1 dan 2\Sertifikat(17)\Sertifikat\\"
 
 # Set the filename manually
-filename = 'Scan Sertifikat _ PT PJB PLTU Pacitan_11.pdf'
+filename = 'Binder1_02.pdf'
 
 # Set the page where the data is located
-data_location = 1  # Change this as needed
+data_location = 2  # Change this as needed
 
 # Combine the source folder and file name
 pdf_path = os.path.join(source_folder, filename)
@@ -60,10 +60,10 @@ if pages:  # Check if the list of pages is not empty
     # Attempt to extract the name
     name = extract_name(text)
     if name:
-        print(f"Extracted name: '{name}'")
+        print(f"✅ Extracted name: '{name}'")
     else:
-        print("Name could not be extracted.")
+        print("🧨 Name could not be extracted.")
 else:
     print("Could not read the specified page from the PDF file.")
 
-print('Finished OCR processing and name extraction from the PDF file.')
+print('✨ Finished OCR processing and name extraction from the PDF file.')
